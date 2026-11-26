@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FF5A4F">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>مهامي</title>
+<style>
+@property --p{syntax:'<number>';inherits:false;initial-value:0}
+:root{
+  --bg:#FAF7F2;--card:#FFFFFF;--ink:#1A1A24;--muted:#8A8798;--line:#EEE8DF;
+  --accent:#FF5A4F;--accent2:#FFAA2B;--glass:rgba(255,255,255,.78);
+  --shadow:0 10px 30px -10px rgba(26,26,36,.14);
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#0C0D12;--card:#16181F;--ink:#F4F2F8;--muted:#8F8CA0;--line:#262935;
+        --accent:#FF6F61;--accent2:#FFC24B;--glass:rgba(22,24,31,.74);
+        --shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+     background:var(--bg);color:var(--ink);line-height:1.7;
+     padding-bottom:130px;animation:fade .5s ease}
+
+/* ----- الحركات ----- */
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.18)}100%{transform:scale(1);opacity:1}}
+@keyframes fill{to{--p:var(--t)}}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(16deg)}20%,40%{transform:rotate(-10deg)}50%{transform:rotate(8deg)}}
+@keyframes bye{to{opacity:0;transform:translateX(-60px) scale(.9)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes blob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,20px) scale(1.15)}}
+
+/* ----- الهيدر ----- */
+.hero{position:relative;overflow:hidden;color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      padding:calc(44px + env(safe-area-inset-top)) 24px 82px;border-radius:0 0 42px 42px}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;
+      background:rgba(255,255,255,.22);filter:blur(34px);animation:blob 8s ease-in-out infinite}
+.hero::before{width:190px;height:190px;top:-60px;inset-inline-start:-40px}
+.hero::after{width:150px;height:150px;bottom:-50px;inset-inline-end:10px;animation-delay:-4s}
+.hero h1{position:relative;margin:0;font-size:1.9rem;font-weight:800;letter-spacing:-.3px;animation:rise .6s both}
+.hero p{position:relative;margin:4px 0 0;opacity:.92;font-weight:500;animation:rise .6s .12s both}
+.wave{display:inline-block;transform-origin:70% 70%;animation:wave 2.2s 1s ease-in-out 2}
+.wrap{max-width:520px;margin:-48px auto 0;padding:0 16px;position:relative}
+
+/* ----- البطاقات ----- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:26px;
+      padding:18px;margin-bottom:14px;box-shadow:var(--shadow);animation:rise .55s both;
+      transition:transform .25s}
+.card:nth-child(2){animation-delay:.08s}
+.card:nth-child(3){animation-delay:.16s}
+.card:hover{transform:translateY(-3px)}
+h2{font-size:1.1rem;font-weight:800;margin:6px 0 12px;animation:rise .5s .2s both}
+
+/* ----- الحقول والأزرار ----- */
+input,select,button{font:inherit;font-size:1rem;padding:13px 15px;border-radius:16px;
+      border:1.5px solid var(--line);background:var(--bg);color:var(--ink);
+      transition:transform .15s,box-shadow .2s,border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--accent);
+      box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+button{background:linear-gradient(135deg,var(--accent),var(--accent2));
+       color:#fff;border:0;font-weight:700;cursor:pointer;
+       box-shadow:0 8px 20px -8px var(--accent)}
+button:hover{transform:translateY(-1px);box-shadow:0 12px 24px -8px var(--accent)}
+button:active{transform:scale(.94)}
+.row{display:flex;gap:8px;margin-bottom:8px}
+.row input{flex:1;min-width:0}
+
+/* ----- حلقة التقدم ----- */
+.ring-box{display:flex;align-items:center;gap:18px}
+.ring{--p:0;width:108px;height:108px;border-radius:50%;display:grid;place-items:center;flex:none;
+      background:conic-gradient(var(--accent) 0,var(--accent2) calc(var(--p)*1%),var(--line) 0);
+      animation:fill 1.4s .3s cubic-bezier(.2,.8,.2,1) forwards}
+.ring div{width:82px;height:82px;border-radius:50%;background:var(--card);
+          display:grid;place-items:center;font-weight:800;font-size:1.35rem}
+
+/* ----- الأقسام ----- */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);
+      border-radius:24px;padding:14px;display:grid;box-shadow:var(--shadow);
+      animation:pop .5s both;transition:transform .2s}
+.stat::after{content:"";position:absolute;top:-22px;inset-inline-end:-22px;width:84px;height:84px;
+      border-radius:50%;background:var(--c);opacity:.14}
+.stat:nth-child(1){animation-delay:.25s}.stat:nth-child(2){animation-delay:.35s}
+.stat:nth-child(3){animation-delay:.45s}.stat:nth-child(4){animation-delay:.55s}
+.stat:hover{transform:translateY(-4px)}
+.stat .ico{width:40px;height:40px;border-radius:14px;background:var(--c);
+      display:grid;place-items:center;font-size:1.25rem;margin-bottom:8px;
+      box-shadow:0 8px 16px -6px var(--c)}
+.stat span{color:var(--muted);font-weight:600;font-size:.9rem}
+.stat b{font-size:1.7rem;font-weight:800;line-height:1.2}
+
+/* ----- التبويبات ----- */
+.tabs{display:flex;gap:4px;padding:5px;margin-bottom:14px;background:var(--card);
+      border:1px solid var(--line);border-radius:20px;animation:rise .5s .15s both}
+.tabs a{flex:1;text-align:center;padding:9px;border-radius:15px;color:var(--muted);
+        text-decoration:none;font-weight:700;transition:background .25s,color .25s,transform .15s}
+.tabs a:active{transform:scale(.94)}
+.tabs a.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+        box-shadow:0 6px 16px -6px var(--accent)}
+
+/* ----- المهام ----- */
+.task{display:flex;align-items:center;gap:12px;background:var(--card);
+      border:1px solid var(--line);border-radius:22px;padding:13px 14px;margin-bottom:10px;
+      box-shadow:var(--shadow);animation:rise .5s both;
+      animation-delay:calc(var(--i)*70ms + .2s);transition:transform .2s}
+.task:hover{transform:translateX(-4px)}
+.task .txt{flex:1;min-width:0;overflow-wrap:anywhere}
+.task .txt b{font-weight:700}
+.task.done .txt b{text-decoration:line-through;color:var(--muted)}
+.chk{width:32px;height:32px;padding:0;border-radius:50%;flex:none;font-size:1rem;
+     background:transparent;border:2.5px solid var(--c);color:#fff;box-shadow:none}
+.chk:hover{box-shadow:none;transform:scale(1.12)}
+.task.done .chk{background:var(--c);animation:pop .45s;box-shadow:0 6px 14px -4px var(--c)}
+.icon{background:none;border:0;box-shadow:none;padding:6px;font-size:1.25rem;line-height:1;
+      color:inherit;opacity:.45}
+.icon:hover{background:none;box-shadow:none;transform:scale(1.2);opacity:1}
+.icon:active{transform:scale(.8)}
+.chip{display:inline-block;padding:1px 11px;border-radius:20px;font-size:.78rem;font-weight:700}
+.empty{text-align:center;color:var(--muted);padding:34px 0;font-weight:600}
+.empty div{font-size:2.6rem;animation:float 3s ease-in-out infinite}
+.clear{width:100%;margin-top:6px;background:transparent;color:var(--muted);
+       border:2px dashed var(--line);box-shadow:none}
+.clear:hover{color:#EF4444;border-color:#EF4444;box-shadow:none}
+
+/* ----- تحديثات بدون إعادة تشغيل الحركات ----- */
+.still .card,.still .task,.still .tabs,.still .stat,.still h2,
+.still .hero h1,.still .hero p,.still .wave,.still .task.done .chk{animation:none}
+.still .ring{animation:none;--p:var(--t)}
+.task.new{animation:rise .45s both;animation-delay:0s}
+.task.bye{animation:bye .35s ease forwards}
+.still .task.done .chk.pop-now{animation:pop .45s}
+
+/* ----- شريط التنقل العائم ----- */
+.bottom{position:fixed;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom));
+        max-width:488px;margin:0 auto;display:flex;gap:6px;padding:7px;border-radius:28px;
+        background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+        border:1px solid var(--line);box-shadow:0 16px 40px -12px rgba(0,0,0,.35)}
+.bottom a{flex:1;text-decoration:none;color:var(--muted);text-align:center;font-size:.78rem;
+          font-weight:700;padding:6px 0;border-radius:21px;transition:transform .2s,background .25s}
+.bottom a:active{transform:scale(.88)}
+.bottom a span{display:block;font-size:1.35rem;line-height:1.3}
+.bottom a.on{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.bottom a.on span{animation:pop .5s}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;
+                       transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav class="bottom" id="nav">
+  <a href="#/" data-r="home"><span>🏠</span>الرئيسية</a>
+  <a href="#/tasks" data-r="tasks"><span>✅</span>مهامي</a>
+  <a href="#/about" data-r="about"><span>👤</span>عني</a>
+</nav>
+
+<script>
+(function () {
+  'use strict';
+
+  var CATS = {
+    'عمل':   ['#4F8CFF', '💼'],
+    'دراسة': ['#A78BFA', '📚'],
+    'شخصي':  ['#FF6B9A', '🌸'],
+    'رياضة': ['#22C55E', '🏃']
+  };
+  var DEF = 'شخصي', KEY = 'tasks_v1', NAME_KEY = 'user_name', MAX = 200;
+  var filter = 'all';
+  var app = document.getElementById('app');
+
+  /* ---------- التخزين ---------- */
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  function load() {
+    var d;
+    try { d = JSON.parse(localStorage.getItem(KEY)); } catch (e) { d = null; }
+    if (!Array.isArray(d)) return [];
+    var changed = false;
+    d.forEach(function (t) {
+      if (!t.id) { t.id = uid(); changed = true; }
+      if (!CATS[t.cat]) { t.cat = DEF; changed = true; }
+    });
+    if (changed) save(d);
+    return d;
+  }
+  function save(t) { try { localStorage.setItem(KEY, JSON.stringify(t)); } catch (e) {} }
+  function getName() { try { return localStorage.getItem(NAME_KEY) || ''; } catch (e) { return ''; } }
+  function setName(n) { try { localStorage.setItem(NAME_KEY, n); } catch (e) {} }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ---------- الصفحات ---------- */
+  function shell(title, sub, body) {
+    return '<div class="hero"><h1>' + title + '</h1><p>' + sub + '</p></div>' +
+           '<div class="wrap">' + body + '</div>';
+  }
+
+  function homePage() {
+    var tasks = load(), total = tasks.length;
+    var done = tasks.filter(function (t) { return t.done; }).length;
+    var pct = total ? Math.floor(done * 100 / total) : 0;
+    var name = esc(getName());
+    var hello = (name ? 'أهلًا ' + name + '! ' : 'أهلًا بك ') + '<span class="wave">👋</span>';
+
+    var cats = '';
+    Object.keys(CATS).forEach(function (c) {
+      var n = tasks.filter(function (t) { return t.cat === c; }).length;
+      cats += '<div class="stat" style="--c:' + CATS[c][0] + '"><div class="ico">' + CATS[c][1] +
+              '</div><span>' + c + '</span><b data-count="' + n + '">' + n + '</b></div>';
+    });
+
+    var body =
+      '<div class="card"><form class="row" id="nameForm">' +
+        '<input name="name" placeholder="اكتب اسمك" autocomplete="off" maxlength="30" value="' + name + '">' +
+        '<button>حفظ</button></form></div>' +
+      '<div class="card ring-box"><div class="ring" style="--t:' + pct + '">' +
+        '<div><span data-count="' + pct + '">' + pct + '</span>%</div></div>' +
+        '<div><h2>تقدمك</h2><span style="color:var(--muted)">أنجزت ' + done + ' من ' + total + ' مهام</span></div></div>' +
+      '<h2>مهامك حسب القسم</h2><div class="stats">' + cats + '</div>';
+    return shell(hello, 'لنجعل اليوم منتجًا', body);
+  }
+
+  function tasksPage() {
+    var tasks = load(), items = '', n = 0;
+    tasks.forEach(function (t) {
+      if (filter === 'todo' && t.done) return;
+      if (filter === 'done' && !t.done) return;
+      var c = CATS[t.cat], id = esc(t.id);
+      var label = t.done ? 'إلغاء الإنجاز' : 'إنجاز';
+      items +=
+        '<div class="task' + (t.done ? ' done' : '') + '" data-id="' + id + '" style="--c:' + c[0] + ';--i:' + Math.min(n, 10) + '">' +
+          '<button class="chk" data-act="toggle" data-id="' + id + '" title="' + label + '" aria-label="' + label + '">' + (t.done ? '✓' : '') + '</button>' +
+          '<div class="txt"><b>' + esc(t.text) + '</b><br>' +
+            '<span class="chip" style="background:' + c[0] + '22;color:' + c[0] + '">' + c[1] + ' ' + esc(t.cat) + '</span></div>' +
+          '<button class="icon" data-act="del" data-id="' + id + '" title="حذف" aria-label="حذف">🗑️</button>' +
+        '</div>';
+      n++;
+    });
+    if (!items) items = '<div class="empty"><div>🎈</div>لا توجد مهام هنا</div>';
+
+    var hasDone = tasks.some(function (t) { return t.done; });
+    var clearBtn = hasDone ? '<button class="clear" data-act="clear">🧹 مسح المنجزة</button>' : '';
+
+    function tab(k, l) {
+      return '<a href="#/tasks" role="button" class="' + (filter === k ? 'on' : '') +
+             '" data-act="filter" data-f="' + k + '">' + l + '</a>';
+    }
+    var options = Object.keys(CATS).map(function (c) {
+      return '<option value="' + c + '">' + CATS[c][1] + ' ' + c + '</option>';
+    }).join('');
+
+    var body =
+      '<div class="card"><form id="addForm">' +
+        '<div class="row"><input name="task" placeholder="مهمة جديدة..." autocomplete="off" maxlength="' + MAX + '" required></div>' +
+        '<div class="row"><select name="cat" style="flex:1">' + options + '</select><button>إضافة ➕</button></div>' +
+      '</form></div>' +
+      '<div class="tabs">' + tab('all', 'الكل') + tab('todo', 'المتبقية') + tab('done', 'المنجزة') + '</div>' +
+      items + clearBtn;
+    return shell('مهامي ✅', 'رتّب يومك بألوان', body);
+  }
+
+  function aboutPage() {
+    var body = '<div class="card"><h2>عن التطبيق</h2>' +
+      '<p>صنعت هذا التطبيق بنفسي بلغة بايثون ثم جافاسكربت على هاتفي 💪</p>' +
+      '<p style="color:var(--muted)">تُحفظ مهامك داخل هاتفك فقط، ولا تُرسل إلى أي مكان.</p></div>';
+    return shell('عني 👤', 'من أنا؟', body);
+  }
+
+  /* ---------- العرض ---------- */
+  function route() {
+    var h = location.hash || '#/';
+    if (h.indexOf('#/tasks') === 0) return 'tasks';
+    if (h.indexOf('#/about') === 0) return 'about';
+    return 'home';
+  }
+
+  function countUps() {
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var end = parseInt(el.getAttribute('data-count'), 10) || 0, t0 = null, dur = 900;
+      if (!end) return;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var k = Math.min((ts - t0) / dur, 1);
+        el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3)));
+        if (k < 1) requestAnimationFrame(step);
+      }
+      el.textContent = '0';
+      requestAnimationFrame(step);
+    });
+  }
+
+  function render(still) {
+    var r = route(), y = window.scrollY;
+    app.innerHTML = r === 'tasks' ? tasksPage() : r === 'about' ? aboutPage() : homePage();
+    app.className = still ? 'still' : '';
+    document.querySelectorAll('#nav a').forEach(function (a) {
+      a.className = a.getAttribute('data-r') === r ? 'on' : '';
+    });
+    if (!still) { window.scrollTo(0, 0); countUps(); } else { window.scrollTo(0, y); }
+  }
+
+  /* ---------- الأحداث ---------- */
+  app.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]');
+    if (!b) return;
+    var act = b.getAttribute('data-act'), id = b.getAttribute('data-id');
+
+    if (act === 'filter') {
+      e.preventDefault();
+      filter = b.getAttribute('data-f');
+      render(true);
+    } else if (act === 'toggle') {
+      var tasks = load();
+      var t = tasks.filter(function (x) { return x.id === id; })[0];
+      if (!t) return;
+      t.done = !t.done;
+      save(tasks);
+      render(true);
+      if (t.done) {
+        var el = app.querySelector('.task[data-id="' + id + '"] .chk');
+        if (el) el.classList.add('pop-now');
+      }
+    } else if (act === 'del') {
+      var card = b.closest('.task');
+      if (card) card.classList.add('bye');
+      setTimeout(function () {
+        save(load().filter(function (x) { return x.id !== id; }));
+        render(true);
+      }, 330);
+    } else if (act === 'clear') {
+      save(load().filter(function (x) { return !x.done; }));
+      render(true);
+    }
+  });
+
+  app.addEventListener('submit', function (e) {
+    var f = e.target;
+    e.preventDefault();
+    if (f.id === 'addForm') {
+      var text = f.elements.task.value.trim().slice(0, MAX);
+      var cat = f.elements.cat.value;
+      if (!CATS[cat]) cat = DEF;
+      if (!text) return;
+      var tasks = load(), id = uid();
+      tasks.push({ id: id, text: text, done: false, cat: cat });
+      save(tasks);
+      render(true);
+      var el = app.querySelector('.task[data-id="' + id + '"]');
+      if (el) el.classList.add('new');
+    } else if (f.id === 'nameForm') {
+      setName(f.elements.name.value.trim().slice(0, 30));
+      render(false);
+    }
+  });
+
+  window.addEventListener('hashchange', function () { render(false); });
+  render(false);
+
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+})();
+</script>
+</body>
+</html>
